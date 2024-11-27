@@ -37,13 +37,13 @@ public class Que : MonoBehaviour
     private void OnEnable()
     {
         GameManager.onStart += EnableLauncher;
-        GameManager.onEnd += DisableLauncher;
+        ///GameManager.onEnd += DisableLauncher;
     }
 
     private void OnDisable()
     {
         GameManager.onStart -= EnableLauncher;
-        GameManager.onEnd -= DisableLauncher;
+        ///GameManager.onEnd -= DisableLauncher;
     }
 
     [ContextMenu("Enable Launcher")]
