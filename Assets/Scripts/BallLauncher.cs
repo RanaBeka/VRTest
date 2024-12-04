@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Build.Content;
 using UnityEngine;
 
-public class Que : MonoBehaviour
+public class   BallLauncher : MonoBehaviour
 {
     [SerializeField] GameObject ball;
     [SerializeField] float disparo;
