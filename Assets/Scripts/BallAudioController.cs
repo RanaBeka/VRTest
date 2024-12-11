@@ -18,13 +18,13 @@ public class BallAudioController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<AudioProperties>() == null)
+        //if (collision.gameObject.GetComponent<AudioProperties>() == null)
             return;
 
-        audioClip = collision.gameObject.GetComponent<AudioProperties>().audioClips;
-        ballAudioSource.volume = CalculateVolumeFromSpeed();
+        //audioClip = collision.gameObject.GetComponent<AudioProperties>().audioClips;
+        //ballAudioSource.volume = CalculateVolumeFromSpeed();
 
-        ballAudioSource.PlayOneShot(audioClip);
+        //ballAudioSource.PlayOneShot(audioClip);
     }
 
     private float CalculateVolumeFromSpeed()

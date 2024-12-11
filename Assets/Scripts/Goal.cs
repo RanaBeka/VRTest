@@ -11,10 +11,10 @@ public class Goal : MonoBehaviour
         {
             var ball = collision.gameObject.GetComponent<Ball>();
 
-            if (ball.hasBallCollided)
+            //if (ball.hasBallCollided)
             {
                 GameManager.Goal();
-                ball.HasBallCollided = true;
+                //ball.HasBallCollided = true;
             }
         }
     }

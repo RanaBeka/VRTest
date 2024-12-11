@@ -36,13 +36,13 @@ public class   BallLauncher : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.onStart += EnableLauncher;
+        //GameManager.onStart += EnableLauncher;
         ///GameManager.onEnd += DisableLauncher;
     }
 
     private void OnDisable()
     {
-        GameManager.onStart -= EnableLauncher;
+        //GameManager.onStart -= EnableLauncher;
         ///GameManager.onEnd -= DisableLauncher;
     }
 

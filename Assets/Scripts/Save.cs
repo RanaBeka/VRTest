@@ -10,18 +10,18 @@ public class Save : MonoBehaviour
         {
             var ball = collision.gameObject.GetComponent<Ball>();
 
-            if ( ball.hasBallCollided)
+            //if ( ball.hasBallCollided)
             {
-                GameManager.SaveGoal();
-                ball.hasBallCollided = true;
+                //GameManager.SaveGoal();
+                //ball.hasBallCollided = true;
 
                 ball.transform.GetChild(1).gameObject.SetActive(true);
 
-                ball.transform.GetChild(0).gameObject<MeshRenderer>().enabled = false;
+                //ball.transform.GetChild(0).gameObject<MeshRenderer>().enabled = false;
 
                 Invoke("DestroyBall", 3f);
 
-                GetComponentInParent<XRBaseController>().SendHapticImpulse(.5f, .25f);
+                //GetComponentInParent<XRBaseController>().SendHapticImpulse(.5f, .25f);
             }
         }
     }

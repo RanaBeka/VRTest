@@ -53,7 +53,7 @@ namespace LevelUp.Manager
     [SerializeField] GameObject retryCanvas;
     [SerializeField] GameObject topScoreCanvas;
     [SerializeField] Button gameStartButton;
-    [SerializeField] ControllerToggle ControllerToggle;
+    //[SerializeField] ControllerToggle ControllerToggle;
         
 
 
@@ -78,7 +78,7 @@ namespace LevelUp.Manager
         void GameStart()
         {
             countdownCanvas.transform.parent.gameObject.SetActive(true);
-            countdownCanvas.StartCountdown();
+            //countdownCanvas.StartCountdown();
             Invoke("Activation", 4f);
         }
 
@@ -103,8 +103,8 @@ namespace LevelUp.Manager
             if (gameState != GameState.Active)
                 return;
 
-            saveAmount++;
-            onSave.Invoke(SaveAmount);
+            //saveAmount++;
+            //onSave.Invoke(SaveAmount);
         }
 
         public void GameOver()
@@ -117,17 +117,17 @@ namespace LevelUp.Manager
             retryCanvas.SetActive(true);
             topScoreCanvas.SetActive(true);
 
-            controllerToggle.ToggleControllerControl();
+            //controllerToggle.ToggleControllerControl();
 
             onEnd.Invoke();
         }
 
         public void Reset()
         {
-            SaveAmount = 0;
+            //SaveAmount = 0;
             goalAmount = 0;
             GameStart();
-            controllerToggle.ToggleControllerControl();
+            //controllerToggle.ToggleControllerControl();
 
         }
 
