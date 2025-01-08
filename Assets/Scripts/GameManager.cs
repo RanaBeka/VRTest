@@ -1,156 +1,94 @@
-using Meta.XR.ImmersiveDebugger.UserInterface.Generic;
-using Oculus.Interaction.Samples;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-
-namespace LevelUp.Manager
+public class GameManager : MonoBehaviour
 {
+    public GameObject ballPrefab;
+    public GameObject goalkeeperPrefab;
+    public Transform goalPosition;
+    public float spawnInterval = 2f;
+    public int maxRounds = 5;
 
-    using UnityEngine;
-    using UnityEngine.Analytics;
-    using UnityEngine.UI;
-    public class GameManager : MonoBehaviour
-{
-    static GameManager instance;
+    private GameObject currentBall;
+    private GameObject currentGoalkeeper;
+    private int scorePlayer1 = 0;
+    private int scorePlayer2 = 0;
+    private int roundNumber = 1;
 
-    public static GameManager Instance
+    void Start()
     {
-        get { return instance; }
+        SpawnNewBall();
+        StartCoroutine(SpawnBalls());
     }
 
-    enum GameState
+    void SpawnNewBall()
     {
-        Start,
-        Active,
-        Over
-    }
-    static GameState gameState;
-
-    public delegate void StartGame();
-    public static event StartGame onStart;
-
-    public delegate void EndGame();
-    public static event EndGame onEnd;
-
-    public delegate void goal(int goalAmount);
-    public static event goal onGoal;
-
-    public static float timerMaxTime = 120f;
-
-    static int goalAmount;
-
-    public static int goalCount
-    {
-        get { return goalAmount; }
+        currentGoalkeeper = Instantiate(goalkeeperPrefab);
+        currentGoalkeeper.transform.position = goalPosition.position + Vector3.up * 0.5f;
+       
     }
 
-    public static int SaveAmount
+    IEnumerator SpawnBalls()
     {
-        get {return SaveAmount;}
-    }
-
-    [SerializeField] CountdownTimer countdownCanvas;
-    [SerializeField] GameObject scoreCanvas;
-    [SerializeField] GameObject retryCanvas;
-    [SerializeField] GameObject topScoreCanvas;
-    [SerializeField] Button gameStartButton;
-    //[SerializeField] ControllerToggle ControllerToggle;
-        
-
-
-        private void Awake()
+        while (true)
         {
-            if (instance == null)
+            yield return new WaitForSeconds(spawnInterval);
+
+            if (currentBall != null)
+                Destroy(currentBall);
+
+            SpawnNewBall();
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+            Destroy(collision.gameObject);
+            CheckGoal();
+        }
+    }
+
+    void CheckGoal()
+    {
+        if (currentGoalkeeper.transform.position.y < goalPosition.position.y)
+        {
+            Debug.Log($"Round {roundNumber}: Goalkeeper missed!");
+            scorePlayer1++;
+            roundNumber++;
+
+            if (scorePlayer1 >= maxRounds)
             {
-                instance = this;
+                Debug.Log("Player 1 wins!");
+                EndGame();
             }
             else
             {
-                Destroy(this.gameObject);
-                DontDestroyOnLoad(this);
+                SpawnNewBall();
             }
-
-            gameState = GameState.Start;
-
-            gameStartButton.onClick.AddListener(() => GameStart());
-
         }
-
-        void GameStart()
+        else
         {
-            countdownCanvas.transform.parent.gameObject.SetActive(true);
-            //countdownCanvas.StartCountdown();
-            Invoke("Activation", 4f);
-        }
+            Debug.Log($"Round {roundNumber}: Goalkeeper saved!");
+            scorePlayer2++;
+            roundNumber++;
 
-        void Activation()
-        {
-            scoreCanvas.SetActive(true);
-            onStart.Invoke();
-            gameState = GameState.Active;
-        }
-
-        public static void Goal()
-        {
-            if (gameState != GameState.Active) 
-                return;
-
-            goalAmount++;
-            onGoal.Invoke(goalAmount);
-        }
-
-        public static void SaveGoal()
-        {
-            if (gameState != GameState.Active)
-                return;
-
-            //saveAmount++;
-            //onSave.Invoke(SaveAmount);
-        }
-
-        public void GameOver()
-        {
-            gameState = GameState.Over;
-
-            TopScoreCheck();
-
-            scoreCanvas.SetActive(false);
-            retryCanvas.SetActive(true);
-            topScoreCanvas.SetActive(true);
-
-            //controllerToggle.ToggleControllerControl();
-
-            onEnd.Invoke();
-        }
-
-        public void Reset()
-        {
-            //SaveAmount = 0;
-            goalAmount = 0;
-            GameStart();
-            //controllerToggle.ToggleControllerControl();
-
-        }
-
-        void TopScoreCheck()
-        {
-            if (SaveAmount > PlayerPrefs.GetInt("SavedScore") || PlayerPrefs.HasKey("SavedScore") == false)
+            if (scorePlayer2 >= maxRounds)
             {
-                PlayerPrefs.SetInt("SavedScore", SaveAmount);
+                Debug.Log("Player 2 wins!");
+                EndGame();
             }
-        }
-
-        public void KillAllBalls()
-        {
-            var loadsOfBalls = GameObject.FindGameObjectsWithTag("Ball");
-
-            foreach (GameObject ball in loadsOfBalls)
+            else
             {
-                Destroy(ball);
+                SpawnNewBall();
             }
         }
+    }
 
-
-        
-
+    void EndGame()
+    {
+        // Implementar lógica de fin del juego aquí
     }
 }

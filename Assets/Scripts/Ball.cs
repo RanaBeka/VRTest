@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public static Ball instance;
-    public static Ball GetInstance()
+    public float speed = 10f;
+    private Rigidbody rb;
+
+    void Start()
     {
-        return instance;
+        rb = GetComponent<Rigidbody>();
     }
 
-    private void Awake()
+    void Update()
     {
-        instance = this;
+        Vector3 direction = (transform.position - transform.parent.position).normalized;
+        rb.velocity = direction * speed;
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Goalkeeper"))
+        {
+            // Manejo de la colisión con el portero
+        }
+    }
 }
